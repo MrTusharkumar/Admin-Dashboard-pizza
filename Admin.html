@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Al-Baik Pizza | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#d4e4f3",
+                        "primary-container": "#db322f",
+                        "surface-container-high": "#e7e8ea",
+                        "surface": "#f8f9fb",
+                        "on-tertiary-container": "#f9fdff",
+                        "on-primary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#bb171c",
+                        "tertiary-fixed": "#afecff",
+                        "surface-bright": "#f8f9fb",
+                        "surface-variant": "#e1e2e4",
+                        "on-surface-variant": "#5b403d",
+                        "inverse-surface": "#2e3132",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "on-secondary-fixed": "#0e1d28",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb4ac",
+                        "surface-dim": "#d9dadc",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#3a4954",
+                        "on-secondary-container": "#576673",
+                        "inverse-on-surface": "#f0f1f3",
+                        "primary": "#b7131a",
+                        "tertiary-container": "#008097",
+                        "on-primary-fixed": "#410002",
+                        "tertiary": "#006578",
+                        "on-surface": "#191c1e",
+                        "on-tertiary-fixed-variant": "#004e5d",
+                        "secondary-fixed-dim": "#b9c8d7",
+                        "outline-variant": "#e4beb9",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#72d4ef",
+                        "surface-container-highest": "#e1e2e4",
+                        "surface-container": "#edeef0",
+                        "background": "#f8f9fb",
+                        "on-tertiary-fixed": "#001f27",
+                        "secondary": "#51606d",
+                        "secondary-fixed": "#d4e4f3",
+                        "primary-fixed": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#ffb4ac",
+                        "outline": "#906f6c",
+                        "on-primary-fixed-variant": "#93000d",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f6",
+                        "on-tertiary": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-headline {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #b7131a 0%, #db322f 100%);
+        }
+
+        .view-content {
+            display: none;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        #deal-overlay,
+        #product-overlay {
+            display: none;
+        }
+
+        #deal-overlay.active,
+        #product-overlay.active {
+            display: flex;
+        }
+
+        /* Premium Dark Mode - Deep Space Palette */
+        .theme-transition {
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode Overrides for Premium Feel */
+        .dark {
+            --bg-body: #08080a;
+            --bg-sidebar: #0f1013;
+            --bg-surface: #15161d;
+            --bg-surface-low: #1a1c26;
+            --bg-surface-bright: #242838;
+            --border-soft: rgba(255, 255, 255, 0.05);
+            --border-medium: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark body {
+            background-color: var(--bg-body);
+            color: #f8fafc;
+        }
+
+        .dark #sidebar {
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-soft);
+        }
+
+        .dark .bg-surface-container-low {
+            background-color: var(--bg-surface-low);
+        }
+
+        .dark .bg-surface-container-lowest {
+            background-color: var(--bg-surface);
+        }
+
+        .dark .bg-surface-bright {
+            background-color: var(--bg-surface-bright);
+        }
+
+        .dark .border-surface-container {
+            border-color: var(--border-medium);
+        }
+
+        .dark .border-outline-variant\/10 {
+            border-color: var(--border-soft);
+        }
+
+        .dark .text-secondary {
+            color: #94a3b8;
+        }
+
+        .dark .text-on-surface {
+            color: #f1f5f9;
+        }
+
+        .dark header.lg:flex {
+            background-color: rgba(15, 16, 19, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-soft) !important;
+        }
+
+        .dark .bg-white {
+            background-color: var(--bg-surface) !important;
+        }
+
+        .dark .bg-gray-100 {
+            background-color: var(--bg-sidebar) !important;
+        }
+
+        .dark .bg-gray-50 {
+            background-color: var(--bg-body) !important;
+        }
+
+        /* Navigation glow for primary items in dark mode */
+        .dark .active-nav-bg {
+            background-color: var(--bg-surface-bright);
+            box-shadow: 0 4px 20px -5px rgba(219, 50, 47, 0.15);
+        }
+
+        /* Responsive Sidebar Drawer Styles */
+        @media (max-width: 1024px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-surface dark:bg-gray-950 text-on-background dark:text-gray-100 font-body antialiased theme-transition">
+
+    <!-- Mobile Header -->
+    <header
+        class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 z-50 flex items-center justify-between px-4">
+        <div class="flex items-center gap-2">
+            <button onclick="toggleSidebar(true)" class="p-2 text-gray-500 dark:text-gray-400">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <h1 class="font-bold text-red-700 dark:text-red-500 tracking-tight">Al-Baik</h1>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="text-gray-500 dark:text-gray-400">
+                <span class="material-symbols-outlined">search</span>
+            </button>
+            <button class="text-gray-500 dark:text-gray-400">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+        </div>
+    </header>
+
+    <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden">
+    </div>
+
+    <!-- SideNavBar -->
+    <aside id="sidebar"
+        class="h-screen w-64 fixed left-0 top-0 flex flex-col bg-gray-100 dark:bg-gray-900 border-none z-50 lg:z-40">
+        <div class="flex flex-col h-full py-6 px-4">
+            <div class="mb-10 px-2 flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-lg bg-primary-gradient flex items-center justify-center text-white font-bold text-xl">
+                    A</div>
+                <div>
+                    <h1 class="text-xl font-bold text-red-700 dark:text-red-500 tracking-tighter">Al-Baik Pizza</h1>
+                    <p class="font-manrope text-xs font-medium tracking-tight text-secondary">Precision Maître d’</p>
+                </div>
+            </div>
+            <nav class="flex-1 space-y-2" id="main-nav">
+                <button data-view="dashboard"
+                    class="nav-link flex w-full items-center gap-3 px-3 py-2 text-red-700 dark:text-red-400 font-bold bg-white dark:bg-gray-800 rounded-lg shadow-sm transition-transform scale-95 active:scale-90">
+                    <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    <span class="font-manrope text-sm font-medium tracking-tight">Dashboard</span>
+                </button>
+                <button data-view="products"
+                    class="nav-link flex w-full items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                    <span class="font-manrope text-sm font-medium tracking-tight">Manage Products</span>
+                </button>
+                <button data-view="deals"
+                    class="nav-link flex w-full items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+                    <span class="font-manrope text-sm font-medium tracking-tight">Manage Deals</span>
+                </button>
+                <button data-view="orders"
+                    class="nav-link flex w-full items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200">
+                    <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+                    <span class="font-manrope text-sm font-medium tracking-tight">Orders</span>
+                </button>
+            </nav>
+            <div class="mt-auto space-y-4 px-2">
+                <!-- Dark Mode Toggle -->
+                <div
+                    class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary dark:text-gray-400">contrast</span>
+                        <span class="text-xs font-bold text-on-surface dark:text-gray-200 uppercase tracking-tight">Dark
+                            Mood</span>
+                    </div>
+                    <button onclick="toggleDarkMode()" id="dark-mode-toggle"
+                        class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-red-700 transition-colors focus:outline-none">
+                        <span class="sr-only">Toggle Dark Mode</span>
+                        <span id="toggle-circle"
+                            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 dark:translate-x-6"></span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3 px-2 py-4">
+                    <img alt="Al-Baik Admin Profile"
+                        class="w-10 h-10 rounded-full object-cover border border-outline-variant/20"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSvd1jxu9HCIBzL3w1bUyLhSBU1oJiBI09tacWrQTeqdehpFxZR8Pr7TMFTaROVAzRYotS_5MfOdPhNx_AmbpZPPizKNiNAAXQE_3eZPvOUY8-sFkHimgwRSGu3G1LP68emDcFUH5gr8Pk4l5o94NQ9auOrAG4EwtX_X683pWrgZt-KTIkI76tBgOof2ysqz86DwcFcjU0qdnmAswWuX9VlbeUQmWHPku2CqmU0_E7jN-OdI-6Hn8sCsPrkK-krc3T7_XfAtmq8rQ" />
+                    <div>
+                        <p class="text-sm font-bold text-on-surface dark:text-gray-100">Admin User</p>
+                        <p class="text-xs text-secondary dark:text-gray-400">Store Manager</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- TopNavBar (Shared Component) -->
+    <header
+        class="hidden lg:flex fixed top-0 right-0 left-64 h-16 z-30 bg-gray-50 dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 justify-between items-center px-8">
+        <div class="flex items-center gap-4 w-1/3">
+            <div class="relative w-full">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary scale-75">search</span>
+                <input type="text" placeholder="Search orders, products..."
+                    class="w-full bg-white dark:bg-gray-900 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-secondary/50 dark:text-gray-100 dark:placeholder:text-gray-500 shadow-sm transition-all" />
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <div
+                class="flex items-center gap-3 px-4 py-1.5 bg-white dark:bg-gray-900 rounded-full shadow-sm border border-outline-variant/10">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-[10px] font-bold text-secondary dark:text-gray-400 uppercase tracking-widest">Store
+                    Live</span>
+            </div>
+            <button
+                class="p-2 text-secondary dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 rounded-xl transition-all relative">
+                <span class="material-symbols-outlined">notifications</span>
+                <span
+                    class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-gray-50 dark:border-gray-950"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Android Bottom Navigation -->
+    <nav
+        class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm h-16 bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200 dark:border-gray-800 rounded-2xl z-50 flex items-center justify-around px-4 shadow-xl">
+        <button onclick="switchView('dashboard')" class="flex flex-col items-center gap-1 group">
+            <span
+                class="material-symbols-outlined text-gray-400 group-[.active]:text-primary transition-colors">dashboard</span>
+            <span
+                class="text-[10px] font-bold text-gray-400 group-[.active]:text-primary uppercase tracking-tighter">Home</span>
+        </button>
+        <button onclick="switchView('products')" class="flex flex-col items-center gap-1 group">
+            <span
+                class="material-symbols-outlined text-gray-400 group-[.active]:text-primary transition-colors">inventory_2</span>
+            <span
+                class="text-[10px] font-bold text-gray-400 group-[.active]:text-primary uppercase tracking-tighter">Items</span>
+        </button>
+        <button onclick="switchView('deals')" class="flex flex-col items-center gap-1 group">
+            <span
+                class="material-symbols-outlined text-gray-400 group-[.active]:text-primary transition-colors">loyalty</span>
+            <span
+                class="text-[10px] font-bold text-gray-400 group-[.active]:text-primary uppercase tracking-tighter">Deals</span>
+        </button>
+        <button onclick="switchView('orders')" class="flex flex-col items-center gap-1 group">
+            <span
+                class="material-symbols-outlined text-gray-400 group-[.active]:text-primary transition-colors">shopping_cart</span>
+            <span
+                class="text-[10px] font-bold text-gray-400 group-[.active]:text-primary uppercase tracking-tighter">Orders</span>
+        </button>
+    </nav>
+
+    <main class="lg:ml-64 mt-16 p-4 lg:p-8 min-h-screen theme-transition">
+
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="view-content active">
+            <header class="mb-10 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">Welcome back, Admin</h2>
+                    <p class="text-secondary font-medium">Your kitchen is running at 94% efficiency today.</p>
+                </div>
+                <button onclick="switchView('deals')"
+                    class="flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-95">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="font-headline text-sm">Create New Deal</span>
+                </button>
+            </header>
+
+            <!-- KPI Cards -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-2 bg-red-50 rounded-lg"><span
+                                class="material-symbols-outlined text-primary">payments</span></div>
+                        <span
+                            class="text-xs font-bold text-tertiary bg-tertiary-container/20 px-2 py-1 rounded-full">+12.5%</span>
+                    </div>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-1">Total Revenue</p>
+                    <h3 class="text-2xl font-black text-on-surface">$24,592.00</h3>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-2 bg-blue-50 rounded-lg text-blue-600"><span
+                                class="material-symbols-outlined">shopping_basket</span></div>
+                        <span
+                            class="text-xs font-bold text-secondary bg-surface-container-high px-2 py-1 rounded-full">Today</span>
+                    </div>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-1">Total Orders</p>
+                    <h3 class="text-2xl font-black text-on-surface">184</h3>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-2 bg-orange-50 rounded-lg text-orange-600"><span
+                                class="material-symbols-outlined">campaign</span></div>
+                        <span
+                            class="text-xs font-bold text-on-surface bg-surface-container-high px-2 py-1 rounded-full">Active</span>
+                    </div>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-1">Active Deals</p>
+                    <h3 class="text-2xl font-black text-on-surface">12</h3>
+                </div>
+                <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-2 bg-red-50 rounded-lg text-red-600"><span
+                                class="material-symbols-outlined">warning</span></div>
+                        <span
+                            class="text-xs font-bold text-error bg-error-container/40 px-2 py-1 rounded-full">Critical</span>
+                    </div>
+                    <p class="text-secondary text-xs uppercase tracking-widest font-bold mb-1">Out of Stock</p>
+                    <h3 class="text-2xl font-black text-on-surface">4</h3>
+                </div>
+            </section>
+
+            <!-- Recent Orders -->
+            <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                <div class="p-6 flex justify-between items-center">
+                    <h3 class="font-headline text-lg font-bold">Recent Orders</h3>
+                    <button onclick="switchView('orders')" class="text-primary text-sm font-bold hover:underline">View
+                        All</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-highest/50">
+                                <th class="px-6 py-4 text-xs font-bold text-secondary uppercase tracking-wider">Order ID
+                                </th>
+                                <th class="px-6 py-4 text-xs font-bold text-secondary uppercase tracking-wider">Customer
+                                </th>
+                                <th class="px-6 py-4 text-xs font-bold text-secondary uppercase tracking-wider">Items
+                                </th>
+                                <th class="px-6 py-4 text-xs font-bold text-secondary uppercase tracking-wider">Price
+                                </th>
+                                <th class="px-6 py-4 text-xs font-bold text-secondary uppercase tracking-wider">Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container-highest">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 text-sm font-medium text-on-surface">#BK-9021</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-surface-container text-[10px] flex items-center justify-center font-bold">
+                                            JD</div><span class="text-sm font-semibold">John Doe</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-secondary">2x BBQ Chicken Pizza...</td>
+                                <td class="px-6 py-4 text-sm font-bold">$42.50</td>
+                                <td class="px-6 py-4"><span
+                                        class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-surface-container-high text-secondary">Preparing</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 text-sm font-medium text-on-surface">#BK-9022</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-surface-container text-[10px] flex items-center justify-center font-bold">
+                                            SM</div><span class="text-sm font-semibold">Sarah Miller</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-secondary">1x Zinger Burger...</td>
+                                <td class="px-6 py-4 text-sm font-bold">$18.20</td>
+                                <td class="px-6 py-4"><span
+                                        class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-tertiary-container text-on-tertiary-fixed">Delivered</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDERS VIEW -->
+        <div id="view-orders" class="view-content">
+            <header class="mb-8 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">Active Orders</h2>
+                    <p class="text-secondary font-medium">You have <span class="text-primary font-bold">14 active
+                            orders</span> currently in the kitchen.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex bg-surface-container-low p-1 rounded-xl border border-outline-variant/10">
+                        <button
+                            class="px-4 py-1.5 text-xs font-bold rounded-lg bg-white text-on-surface shadow-sm transition-all">All
+                            Time</button>
+                        <button
+                            class="px-4 py-1.5 text-xs font-medium text-secondary hover:text-on-surface">Today</button>
+                        <button
+                            class="px-4 py-1.5 text-xs font-medium text-secondary hover:text-on-surface">Weekly</button>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 bg-white text-on-surface text-sm font-semibold rounded-lg border-outline-variant/20 border hover:bg-surface-bright transition-colors shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        Select Date Range
+                    </button>
+                </div>
+            </header>
+
+            <!-- Filter Bar -->
+            <div
+                class="bg-surface-container-low rounded-xl p-4 mb-8 flex items-center justify-between border border-outline-variant/10">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-bold uppercase tracking-wider shadow-sm">All
+                        Orders</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">New</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Preparing</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Dispatched</button>
+                </div>
+                <div class="flex items-center gap-3 pl-4 border-l border-surface-variant">
+                    <span class="text-xs font-bold text-secondary uppercase">Sort:</span>
+                    <select
+                        class="bg-transparent border-none text-xs font-bold text-on-surface focus:ring-0 cursor-pointer p-0">
+                        <option>Newest First</option>
+                        <option>Highest Amount</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-4">
+                    <!-- Order Card -->
+                    <div
+                        class="group relative flex items-center px-6 py-5 bg-white rounded-xl shadow-sm border border-outline-variant/10 hover:shadow-md transition-all cursor-pointer">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary rounded-l-xl"></div>
+                        <div class="flex-1 grid grid-cols-4 gap-4 items-center">
+                            <div>
+                                <span class="font-headline font-bold text-on-surface text-sm">#BK-9025</span>
+                                <p class="text-[10px] text-secondary mt-0.5">10 mins ago</p>
+                            </div>
+                            <div>
+                                <span class="text-sm font-semibold text-on-surface block">Marcus Holloway</span>
+                                <p class="text-[10px] text-secondary mt-0.5 truncate">+1 (555) 012-3456</p>
+                            </div>
+                            <div class="col-span-1">
+                                <span class="text-xs text-secondary truncate block">2x Lg Pepperoni...</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="font-headline font-bold text-on-surface">$42.50</span>
+                                <span
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-secondary-container text-on-secondary-fixed-variant">New</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ... More order cards ... -->
+                </div>
+
+                <!-- Side Detail -->
+                <div class="space-y-6">
+                    <aside
+                        class="bg-white rounded-xl shadow-sm border border-outline-variant/10 overflow-hidden flex flex-col">
+                        <div class="p-6 border-b border-surface-container">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-headline font-bold text-xl text-on-surface">Order #BK-9025</h3>
+                                    <p class="text-xs text-secondary mt-1">Oct 24, 2023 • 14:32 PM</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-secondary-container/20 rounded-lg">
+                                <div class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></div>
+                                <span
+                                    class="text-[10px] font-bold text-on-secondary-fixed-variant uppercase tracking-wide">Status:
+                                    New Order</span>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-start gap-4">
+                                <img alt="Marcus"
+                                    class="w-12 h-12 rounded-lg object-cover border border-outline-variant/10"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBulg8fNNwVunAOZ-F8ZcMK8u4Y68EKPRRXPD5VQobY1BAeoG0_BXilyNjj4sFeeyJ4JM9Hr7abB3cx_jEiJ8yt5GxH5EfqexxhqaIwgrRnhURIkyEaMVKh7XsxELMlwqyL-XyHEVeK08XQze8WL4VjbcCGA6oUGuNVNCrbSQ1-RIkLt8rXhsUYFpgj18MtGZmjtc2nKRCM3atQnGMC-fue4jVISRHRESG0xQA0ciDojETMVTRnxZiTUyOR7Al2epbajL5Tdwe508I" />
+                                <div>
+                                    <p class="text-sm font-bold text-on-surface">Marcus Holloway</p>
+                                    <p class="text-xs text-secondary mt-0.5">+1 (555) 012-3456</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-surface-container-highest space-y-2">
+                                <div class="flex justify-between text-xs text-secondary">
+                                    <span>Subtotal</span><span>$42.50</span></div>
+                                <div class="flex justify-between pt-2">
+                                    <span class="font-bold text-on-surface">Total</span>
+                                    <span class="font-headline font-black text-xl text-primary">$42.50</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-95">Accept
+                                Order</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEALS VIEW -->
+        <div id="view-deals" class="view-content">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-on-surface tracking-tight font-headline">Manage Deals</h2>
+                    <p class="text-secondary mt-1">Configure and monitor your restaurant's promotional offers.</p>
+                </div>
+                <button onclick="toggleDealOverlay(true)"
+                    class="bg-primary-gradient text-on-primary px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                    <span>Create New Deal</span>
+                </button>
+            </div>
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-primary transition-all group-hover:w-2"></div>
+                    <p class="text-secondary font-medium text-sm mb-4">Total Active Deals</p>
+                    <div class="flex items-end gap-3">
+                        <h3 class="text-4xl font-extrabold font-headline">12</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1.5 h-full bg-tertiary transition-all group-hover:w-2"></div>
+                    <p class="text-secondary font-medium text-sm mb-4">Top Performing</p>
+                    <h3 class="text-xl font-bold font-headline truncate">Family Feast Bundle</h3>
+                </div>
+            </section>
+
+            <div
+                class="bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm overflow-hidden mb-10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr
+                                class="bg-surface-container-low text-secondary text-[11px] uppercase tracking-widest font-bold">
+                                <th class="px-8 py-4">Deal Details</th>
+                                <th class="px-6 py-4">Pricing</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-8 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deals-tbody" class="divide-y divide-surface-container">
+                            <!-- Deals will be rendered here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS VIEW -->
+        <div id="view-products" class="view-content">
+            <header class="mb-10 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">Manage Products</h2>
+                    <p class="text-secondary font-medium">Add, edit, and organize your menu items.</p>
+                </div>
+                <button onclick="toggleProductOverlay(true)"
+                    class="flex items-center gap-2 bg-primary-gradient text-on-primary px-6 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-95">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="font-headline text-sm">Add New Product</span>
+                </button>
+            </header>
+
+            <!-- Filters & Search -->
+            <div
+                class="bg-surface-container-low rounded-xl p-4 mb-8 flex items-center justify-between border border-outline-variant/10">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-bold uppercase tracking-wider shadow-sm">All
+                        Items</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Pizzas</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Burgers</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Sides</button>
+                    <button
+                        class="whitespace-nowrap px-4 py-2 rounded-lg bg-white text-on-surface text-xs font-bold uppercase tracking-wider border-outline-variant/10 border hover:bg-gray-50 transition-colors">Drinks</button>
+                </div>
+                <div class="flex items-center gap-3 pl-4 border-l border-surface-variant">
+                    <span class="text-xs font-bold text-secondary uppercase">Availability:</span>
+                    <select
+                        class="bg-transparent border-none text-xs font-bold text-on-surface focus:ring-0 cursor-pointer p-0">
+                        <option>In Stock</option>
+                        <option>Out of Stock</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+            <!-- Products Table -->
+            <div
+                class="bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm overflow-hidden mb-10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr
+                                class="bg-surface-container-low text-secondary text-[11px] uppercase tracking-widest font-bold">
+                                <th class="px-8 py-4">Product Details</th>
+                                <th class="px-6 py-4">Category</th>
+                                <th class="px-6 py-4">Pricing</th>
+                                <th class="px-6 py-4">Stock Status</th>
+                                <th class="px-8 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-tbody" class="divide-y divide-surface-container">
+                            <!-- Products will be rendered here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination-like footer -->
+                <div
+                    class="px-8 py-6 border-t border-surface-container bg-surface-container-low flex items-center justify-between text-[11px] font-bold uppercase tracking-widest text-secondary">
+                    <span>Total 24 products registered</span>
+                    <div class="flex gap-4">
+                        <button class="hover:text-primary transition-colors disabled:opacity-30" disabled>Previous
+                            Page</button>
+                        <button class="hover:text-primary transition-colors">Next Page</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create/Edit Deal Overlay Shell -->
+    <div id="deal-overlay" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex justify-end">
+        <div
+            class="w-full max-w-xl bg-surface-container-lowest dark:bg-gray-900 shadow-2xl h-full flex flex-col relative animate-slide-in">
+            <div class="absolute left-0 top-0 w-2 h-full bg-tertiary"></div>
+            <div
+                class="px-10 py-8 border-b border-surface-container dark:border-gray-800 flex justify-between items-start">
+                <div>
+                    <h3 class="text-2xl font-extrabold font-headline dark:text-white">Create New Deal</h3>
+                    <p class="text-secondary dark:text-gray-400 text-sm mt-1">Configure your promotional bundle details.
+                    </p>
+                </div>
+                <button onclick="toggleDealOverlay(false)" class="text-secondary hover:text-primary p-2">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-10 py-8 space-y-8">
+                <div class="space-y-4">
+                    <label
+                        class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope uppercase tracking-widest">Deal
+                        Image</label>
+                    <div id="deal-image-dropzone" onclick="document.getElementById('deal-image-input').click()"
+                        class="border-2 border-dashed border-outline-variant/40 dark:border-gray-700 rounded-2xl p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 dark:bg-gray-800/50 hover:bg-surface-container-low dark:hover:bg-gray-800 transition-colors cursor-pointer group relative overflow-hidden">
+                        <input type="file" id="deal-image-input" class="hidden" accept="image/*" />
+                        <img id="deal-image-preview" class="absolute inset-0 w-full h-full object-cover hidden" />
+                        <div id="deal-image-placeholder" class="z-10">
+                            <span class="material-symbols-outlined text-primary text-3xl mb-3">cloud_upload</span>
+                            <p class="text-sm font-bold dark:text-gray-200">Click to upload or drag and drop</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Deal
+                        Name</label>
+                    <input id="deal-name"
+                        class="w-full px-4 py-3 rounded-xl border border-outline-variant/40 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-primary outline-none"
+                        placeholder="e.g. Weekend Party Special" type="text" />
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <label class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Deal
+                            Price</label>
+                        <div class="relative">
+                            <span
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-secondary dark:text-gray-400 font-bold">$</span>
+                            <input id="deal-price"
+                                class="w-full pl-8 pr-4 py-3 rounded-xl border-2 border-primary bg-white dark:bg-gray-800 dark:text-primary dark:border-primary focus:ring-0 text-sm font-bold text-primary"
+                                placeholder="0.00" type="number" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="px-10 py-8 border-t border-surface-container bg-surface-container-lowest dark:bg-gray-900 flex gap-4">
+                <button onclick="toggleDealOverlay(false)"
+                    class="flex-1 py-4 px-6 rounded-xl font-bold bg-surface-container-high dark:bg-gray-800 dark:text-gray-300 text-secondary hover:bg-surface-container-highest dark:hover:bg-gray-700 transition-colors">Discard</button>
+                <button id="save-deal-btn"
+                    class="flex-1 py-4 px-6 rounded-xl font-bold bg-primary-gradient text-on-primary shadow-lg shadow-primary/30">Launch
+                    Promotion</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contextual FAB -->
+    <div class="fixed bottom-8 right-8">
+        <button
+            class="w-14 h-14 bg-on-surface text-white rounded-full flex items-center justify-center shadow-xl hover:-translate-y-1 transition-all active:scale-95 group">
+            <span class="material-symbols-outlined text-[28px] group-hover:rotate-12 transition-transform">print</span>
+        </button>
+    </div>
+
+    <!-- Create/Edit Product Overlay Shell -->
+    <div id="product-overlay" class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-50 flex justify-end">
+        <div
+            class="w-full max-w-xl bg-surface-container-lowest dark:bg-gray-900 shadow-2xl h-full flex flex-col relative animate-slide-in">
+            <div class="absolute left-0 top-0 w-2 h-full bg-primary-container"></div>
+            <div
+                class="px-10 py-8 border-b border-surface-container dark:border-gray-800 flex justify-between items-start">
+                <div>
+                    <h3 class="text-2xl font-extrabold font-headline dark:text-white">Add New Product</h3>
+                    <p class="text-secondary dark:text-gray-400 text-sm mt-1">Fill in the details to add a new item to
+                        your menu.</p>
+                </div>
+                <button onclick="toggleProductOverlay(false)" class="text-secondary hover:text-primary p-2">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-10 py-8 space-y-8">
+                <div class="space-y-4">
+                    <label
+                        class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope uppercase tracking-widest">Product
+                        Image</label>
+                    <div id="product-image-dropzone" onclick="document.getElementById('product-image-input').click()"
+                        class="border-2 border-dashed border-outline-variant/40 rounded-2xl p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 dark:bg-gray-800/50 hover:bg-surface-container-low dark:hover:bg-gray-800 transition-colors cursor-pointer group relative overflow-hidden">
+                        <input type="file" id="product-image-input" class="hidden" accept="image/*" />
+                        <img id="product-image-preview" class="absolute inset-0 w-full h-full object-cover hidden" />
+                        <div id="product-image-placeholder" class="z-10">
+                            <span class="material-symbols-outlined text-primary text-3xl mb-3">photo_camera</span>
+                            <p class="text-sm font-bold dark:text-gray-200">Upload product photo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Product
+                        Name</label>
+                    <input id="product-name"
+                        class="w-full px-4 py-3 rounded-xl border border-outline-variant/40 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-primary outline-none"
+                        placeholder="e.g. Garlic Parmesan Wings" type="text" />
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <label
+                            class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Price</label>
+                        <div class="relative">
+                            <span
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-secondary dark:text-gray-400 font-bold">$</span>
+                            <input id="product-price"
+                                class="w-full pl-8 pr-4 py-3 rounded-xl border border-outline-variant/40 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-primary outline-none"
+                                placeholder="10.00" type="number" />
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <label
+                            class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Category</label>
+                        <select id="product-category"
+                            class="w-full px-4 py-3 rounded-xl border border-outline-variant/40 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-primary outline-none appearance-none">
+                            <option>Pizzas</option>
+                            <option>Burgers</option>
+                            <option>Sides</option>
+                            <option>Drinks</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <label
+                        class="block text-sm font-bold text-on-surface dark:text-gray-100 font-manrope">Description</label>
+                    <textarea id="product-description" rows="3"
+                        class="w-full px-4 py-3 rounded-xl border border-outline-variant/40 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:ring-2 focus:ring-primary outline-none"
+                        placeholder="Describe the ingredients or flavor profile..."></textarea>
+                </div>
+            </div>
+            <div
+                class="px-10 py-8 border-t border-surface-container bg-surface-container-lowest dark:bg-gray-900 flex gap-4">
+                <button onclick="toggleProductOverlay(false)"
+                    class="flex-1 py-4 px-6 rounded-xl font-bold bg-surface-container-high dark:bg-gray-800 dark:text-gray-300 text-secondary hover:bg-surface-container-highest dark:hover:bg-gray-700 transition-colors">Cancel</button>
+                <button id="save-product-btn"
+                    class="flex-1 py-4 px-6 rounded-xl font-bold bg-primary-gradient text-on-primary shadow-lg shadow-primary/30">Save
+                    Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Data Management ---
+        let products = JSON.parse(localStorage.getItem('albaik-products')) || [
+            { id: 'AB-PIZ-01', name: 'Margherita Pizza', price: 12.99, category: 'Pizzas', status: 'In Stock', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop', description: 'Classic tomato and mozzarella.' },
+            { id: 'AB-BUR-01', name: 'Classic Burger', price: 9.50, category: 'Burgers', status: 'In Stock', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=2070&auto=format&fit=crop', description: 'Prime beef with secret sauce.' },
+            { id: 'AB-PIZ-02', name: 'Pepperoni Feast', price: 14.99, category: 'Pizzas', status: 'Out of Stock', image: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=2070&auto=format&fit=crop', description: 'Loaded with spicy pepperoni.' }
+        ];
+
+        let deals = JSON.parse(localStorage.getItem('albaik-deals')) || [
+            { id: 'AB-FEAST-01', name: 'Family Deal 1', price: 24.99, status: 'Active', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQPpXnO4p9kvhqiZGqHWkEhe3Jbwlp-a3K1TUd38-9Ht5BBLXYYh-8IiCZzBEC7CEQ2nuraOU8ZX_heoxvHqviTOxnF4ealI9IMZZGXZzYqsdY8TT5Pdj8RqZHrYg9cdnFNWxfIDZnXyfDcby06hfzpf6MW7-VTLzxUUW9LCqURIZ2JfEOFVES_Vmp_x5afIqim9Y8Td66sUB6ZU6V--9JBcdPJiWUW6OwRcn43iSaYb9q1gaf18iy9suw8bo8xiFHPQF2lifWfAY' }
+        ];
+
+        function saveData() {
+            localStorage.setItem('albaik-products', JSON.stringify(products));
+            localStorage.setItem('albaik-deals', JSON.stringify(deals));
+        }
+
+        // --- Rendering ---
+        function renderProducts() {
+            const tbody = document.getElementById('products-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = products.map(product => `
+                <tr class="group hover:bg-surface-bright transition-colors">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <img alt="${product.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm" src="${product.image}" />
+                            <div>
+                                <p class="font-bold text-on-surface dark:text-gray-100 font-manrope">${product.name}</p>
+                                <p class="text-xs text-secondary dark:text-gray-400">ID: ${product.id}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-6">
+                        <span class="px-3 py-1 bg-secondary-container/50 text-secondary text-[10px] font-bold rounded-full uppercase tracking-wider">${product.category}</span>
+                    </td>
+                    <td class="px-6 py-6">
+                        <div class="flex items-center gap-3">
+                            <p class="text-lg font-bold text-primary">$${product.price.toFixed(2)}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-6">
+                        <span class="${product.status === 'In Stock' ? 'bg-tertiary-container text-on-tertiary-fixed' : 'bg-error-container text-on-error-container'} px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">${product.status}</span>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <div class="flex justify-end gap-2">
+                            <button onclick="deleteProduct('${product.id}')" class="p-2 text-secondary hover:text-red-500 transition-colors">
+                                <span class="material-symbols-outlined text-xl">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.querySelector('[data-view="products"] .font-medium + p')?.textContent || (document.getElementById('view-products').querySelector('p').textContent = `Add, edit, and organize your ${products.length} menu items.`);
+        }
+
+        function renderDeals() {
+            const tbody = document.getElementById('deals-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = deals.map(deal => `
+                <tr class="group hover:bg-surface-bright transition-colors">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <img alt="${deal.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm" src="${deal.image}" />
+                            <div>
+                                <p class="font-bold text-on-surface dark:text-gray-100 font-manrope">${deal.name}</p>
+                                <p class="text-xs text-secondary dark:text-gray-400">ID: ${deal.id}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-6">
+                        <div class="flex items-center gap-3">
+                            <p class="text-lg font-bold text-primary">$${deal.price.toFixed(2)}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-6">
+                        <span class="bg-tertiary-container text-on-tertiary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">${deal.status}</span>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <button onclick="deleteDeal('${deal.id}')" class="p-2 text-secondary hover:text-red-500 transition-colors">
+                            <span class="material-symbols-outlined text-xl">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // --- Image Upload Handling ---
+        let currentProductImage = '';
+        let currentDealImage = '';
+
+        function setupImageHandlers(inputId, previewId, placeholderId, callback) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const placeholder = document.getElementById(placeholderId);
+
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        preview.src = event.target.result;
+                        preview.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                        callback(event.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+
+        setupImageHandlers('product-image-input', 'product-image-preview', 'product-image-placeholder', (img) => currentProductImage = img);
+        setupImageHandlers('deal-image-input', 'deal-image-preview', 'deal-image-placeholder', (img) => currentDealImage = img);
+
+        // --- CRUD Operations ---
+        document.getElementById('save-product-btn').onclick = () => {
+            const name = document.getElementById('product-name').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const category = document.getElementById('product-category').value;
+            const desc = document.getElementById('product-description').value;
+
+            if (!name || isNaN(price)) return alert('Please fill in required fields.');
+
+            const newProduct = {
+                id: 'AB-' + Math.random().toString(36).substr(2, 6).toUpperCase(),
+                name,
+                price,
+                category,
+                status: 'In Stock',
+                image: currentProductImage || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop', // fallback
+                description: desc
+            };
+
+            products.push(newProduct);
+            saveData();
+            renderProducts();
+            toggleProductOverlay(false);
+
+            // Reset Form
+            document.getElementById('product-name').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('product-description').value = '';
+            document.getElementById('product-image-preview').classList.add('hidden');
+            document.getElementById('product-image-placeholder').classList.remove('hidden');
+            currentProductImage = '';
+        };
+
+        document.getElementById('save-deal-btn').onclick = () => {
+            const name = document.getElementById('deal-name').value;
+            const price = parseFloat(document.getElementById('deal-price').value);
+
+            if (!name || isNaN(price)) return alert('Please fill in required fields.');
+
+            const newDeal = {
+                id: 'AB-DEAL-' + Math.random().toString(36).substr(2, 4).toUpperCase(),
+                name,
+                price,
+                status: 'Active',
+                image: currentDealImage || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop'
+            };
+
+            deals.push(newDeal);
+            saveData();
+            renderDeals();
+            toggleDealOverlay(false);
+
+            // Reset Form
+            document.getElementById('deal-name').value = '';
+            document.getElementById('deal-price').value = '';
+            document.getElementById('deal-image-preview').classList.add('hidden');
+            document.getElementById('deal-image-placeholder').classList.remove('hidden');
+            currentDealImage = '';
+        };
+
+        window.deleteProduct = (id) => {
+            if (confirm('Are you sure you want to remove this product?')) {
+                products = products.filter(p => p.id !== id);
+                saveData();
+                renderProducts();
+            }
+        };
+
+        window.deleteDeal = (id) => {
+            if (confirm('Are you sure you want to remove this deal?')) {
+                deals = deals.filter(d => d.id !== id);
+                saveData();
+                renderDeals();
+            }
+        };
+
+        // --- Navigation ---
+        const navLinks = document.querySelectorAll('.nav-link');
+        const views = document.querySelectorAll('.view-content');
+
+        function switchView(viewId) {
+            navLinks.forEach(link => {
+                if (link.dataset.view === viewId) {
+                    link.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:text-red-600', 'dark:hover:text-red-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-800');
+                    link.classList.add('text-red-700', 'dark:text-red-400', 'font-bold', 'bg-white', 'dark:bg-gray-800', 'active-nav-bg', 'shadow-sm', 'scale-95');
+                } else {
+                    link.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-red-600', 'dark:hover:text-red-300', 'hover:bg-gray-200', 'dark:hover:bg-gray-800');
+                    link.classList.remove('text-red-700', 'dark:text-red-400', 'font-bold', 'bg-white', 'dark:bg-gray-800', 'active-nav-bg', 'shadow-sm', 'scale-95');
+                }
+            });
+
+            views.forEach(view => {
+                if (view.id === `view-${viewId}`) {
+                    view.classList.add('active');
+                } else {
+                    view.classList.remove('active');
+                }
+            });
+
+            const navButtons = document.querySelectorAll('nav button, aside nav button');
+            navButtons.forEach(link => {
+                const viewAttr = link.getAttribute('onclick');
+                if (viewAttr && viewAttr.includes(`'${viewId}'`)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => switchView(link.dataset.view));
+        });
+
+        function toggleDealOverlay(show) {
+            document.getElementById('deal-overlay').classList.toggle('active', show);
+        }
+
+        function toggleProductOverlay(show) {
+            document.getElementById('product-overlay').classList.toggle('active', show);
+        }
+
+        function toggleSidebar(show) {
+            document.getElementById('sidebar').classList.toggle('open', show);
+            document.getElementById('sidebar-overlay').classList.toggle('hidden', !show);
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Initialize Theme & Data
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        renderProducts();
+        renderDeals();
+
+        // Close sidebar on view change (mobile)
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 1024) toggleSidebar(false);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
