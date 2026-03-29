@@ -1143,9 +1143,11 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        // Initialize Theme & Data
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Initialize Theme & Data (Defaults to Light)
+        if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
 
         renderProducts();
